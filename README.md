@@ -29,7 +29,7 @@ src/main/java/com
 - Used as a **sandbox** for:
   - Java language practice
   - Data structures & algorithms
-  - Quick exploratory scripts
+  - Quick exploratory test automation scripts that utilize inline only (no POM)
 - Intentionally kept separate from automation code.
 
 ### `pages`
@@ -46,6 +46,7 @@ src/main/java/com
   - Explicit synchronization
   - Defensive cleanup (`try / catch / finally`)
   - Minimal but meaningful console logging
+  - POM usage from pages
 
 ---
 
