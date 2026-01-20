@@ -1,142 +1,127 @@
 # Java Selenium Automation Playground
 
-This repository is a **lightweight Java + Selenium + Maven setup** used for hands-on practice, interview preparation, and rapid experimentation with UI automation concepts.
+This repository is a **lightweight Java + Selenium + Maven automation setup** used for learning, experimentation, and interview preparation.
 
-The goal is **clarity over complexity** — focusing on solid fundamentals such as waits, synchronization, Page Object design, and realistic user flows, rather than building a heavy framework prematurely.
+The focus is on:
+- clean project structure
+- correct Selenium synchronization (explicit waits)
+- basic Page Object Model (POM) usage
+- readable, debuggable test flows
+
+It is intentionally kept **simple and framework-light**, so it can be quickly extended or refactored during live coding or pair-programming sessions.
 
 ---
 
 ## Tech Stack
 
-- **Java** (JDK 17+)
-- **Selenium WebDriver 4**
-- **Maven**
-- **WebDriverManager**
-- **ChromeDriver**
-- Explicit waits (`WebDriverWait`, `ExpectedConditions`)
+- Java
+- Selenium WebDriver
+- Maven
+- WebDriverManager
+- ChromeDriver
 
 ---
 
 ## Project Structure
 
+```
 src/main/java/com
-├── example // Java scratchpad (DS/Algo, quick experiments)
-├── pages // Page Object / locator classes
-└── tests // Standalone test flows (entry points)
+├─ example     → simple standalone Java scripts / scratchpad
+├─ pages       → Page Object Model (locators + waits)
+└─ tests       → test scripts that drive flows using POM
+```
 
+### `example/`
+Contains **basic inline Java scripts** and quick experiments.
+- Used for simple Selenium exploration
+- Can also be used for Java fundamentals / DS & Algo practice
+- No abstraction, minimal ceremony
 
-### `example`
-- Used as a **sandbox** for:
-  - Java language practice
-  - Data structures & algorithms
-  - Quick exploratory test automation scripts that utilize inline only (no POM)
-- Intentionally kept separate from automation code.
+### `pages/`
+Contains **Page Object Model (POM)** classes.
+- Encapsulates element locators and explicit wait logic
+- Keeps test scripts DRY and readable
+- Uses constructor-based dependency injection (`WebDriver`)
 
-### `pages`
-- Contains **Page Object–style classes**.
-- Responsibility:
-  - Store element locators
-  - Encapsulate wait logic
-- No test flow logic inside.
+Example responsibilities:
+- locating elements
+- waiting for elements to be ready
+- exposing elements or simple actions
 
-### `tests`
-- Contains **executable automation flows**.
-- Each class demonstrates:
-  - Realistic user journeys
-  - Explicit synchronization
-  - Defensive cleanup (`try / catch / finally`)
-  - Minimal but meaningful console logging
-  - POM usage from pages
+### `tests/`
+Contains **test scripts / flow drivers**.
+- Uses page objects from `pages/`
+- Focuses on user flows and intent, not locators
+- Includes simple, checkpoint-based console logging for debugging
 
 ---
 
 ## Key Concepts Practiced
 
-### Explicit Waits (No Hard Sleeps)
-- Avoids `Thread.sleep` except when diagnosing issues.
-- Waits are tied to **state readiness**, not just element presence.
-- Example patterns:
-  - Waiting for post-login indicators
-  - Waiting for dropdown options to populate asynchronously
-
-### Handling Async Data Readiness
-- Demonstrates waiting for:
-  - `<option>` elements inside `<select>` tags
-  - Backend-driven UI updates
-- Avoids fragile timing assumptions.
-
-### Page Object Model (Lightweight)
-- Constructor-based injection of `WebDriver`
-- Locators defined once
-- Test classes remain readable and intention-driven
-
-### Defensive Teardown
-- Uses `finally` blocks to guarantee:
-  - Browser cleanup
-  - Execution timing logs
-- Prevents orphan browser sessions on failure.
+- Explicit waits (`WebDriverWait`)
+- Avoiding `Thread.sleep` where possible
+- Waiting for **state and data readiness**, not just element presence
+- Dropdown handling using `Select`
+- Phased test flows (login → checkpoint → action)
+- Clean browser teardown using `try / catch / finally`
+- Minimal but meaningful console logging
 
 ---
 
-## Sample Scenarios Covered
+## Example Flow Implemented
 
-- Basic login flows
-- Post-login navigation
-- Dropdown interaction using `Select`
-- Transaction-style flows (e.g. account creation)
-- Extracting and logging business data (e.g. generated account numbers)
+- Login to Parabank demo application
+- Wait for post-login state
+- Navigate to “Open New Account”
+- Handle dropdowns populated asynchronously
+- Submit new account request
+- Capture and print generated account number
 
-These scenarios intentionally go **beyond simple `sendKeys()` demos** to reflect real-world automation challenges.
-
----
-
-## Logging Philosophy
-
-- Console logging is **minimal and checkpoint-based**
-- Logs focus on:
-  - Key user actions
-  - Flow transitions
-  - Business-relevant outcomes
-- Avoids noisy per-locator logging
-
-Example:
-[login1] Navigating to login page
-[login1] Login successful
-[login1] New account created: 13677
-
+This flow intentionally goes beyond simple `sendKeys` to practice:
+- navigation
+- dropdowns
+- async UI behavior
+- transactional confirmation handling
 
 ---
 
-## Why This Repo Exists
+## Running the Project
 
-This project is **not** intended to be a full production framework.
+From the project root:
 
-Instead, it serves as:
-- A **clean reference baseline** for Java Selenium automation
-- A fast starting point for **pair programming or live coding**
-- A comparison point when evaluating **modern tools like Playwright**
+```bash
+mvn clean compile
+```
 
----
+Run individual scripts directly via their `main()` methods.
 
-## Notes
-
-- Credentials used are demo-only (public test sites).
-- This repo evolves incrementally as concepts are explored.
-- Heavier abstractions (BaseTest, listeners, reporting, CI) are intentionally deferred.
+> Note: This project does not yet use a test runner (e.g. TestNG/JUnit) by design.  
+> It is structured to be easily extended into one if needed.
 
 ---
 
-## Next Steps (Out of Scope for This Repo)
+## Design Philosophy
 
-- Equivalent baseline in **TypeScript + Playwright**
-- TestNG / JUnit integration
-- CI pipeline setup
-- Reporting & screenshots on failure
+- Start simple
+- Introduce abstraction only when duplication appears
+- Prefer clarity over heavy frameworks
+- Optimize for **live coding, debugging, and interview explanation**
 
-These are explored separately to keep this project focused and readable.
+This repository serves as a **personal reference baseline** that can be quickly adapted into larger automation frameworks when required.
+
+---
+
+## Future Extensions (Optional)
+
+- Move test scripts to `src/test/java`
+- Add TestNG or JUnit
+- Introduce BasePage / BaseTest abstractions
+- Add reporting or CI integration
+- Parallel browser execution
 
 ---
 
 ## Disclaimer
 
-This repository is for **learning and interview preparation purposes only** and is not affiliated with any third-party demo systems used.
+This repository is intended for learning and demonstration purposes.  
+Credentials and test data are placeholders only.
